@@ -23,7 +23,7 @@ class BILL {
         this.goodsList = []
     }
 
-    addGoods(goods: any | Object[]): void {
+    addGoods(goods: object | object[]): void {
         let that: any = this
         if (Array.isArray(goods)) {
             goods.forEach((gItem: object) => {
