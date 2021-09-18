@@ -47,10 +47,6 @@ export default {
 }
 </script>
 <style scoped>
-:root {
-  --van-button-primary-background-color: red;
-}
-
 .app {
   height: 100vh;
   max-height: 100vh;

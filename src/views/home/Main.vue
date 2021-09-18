@@ -1,8 +1,6 @@
 <template>
   <div>
     <van-nav-bar
-        class="test"
-        style="color: white !important;background-color: red !important;"
         :title="activeTab==0?'门店中心':activeTab==1?'业务':'我的'"
         fixed
     />
@@ -51,16 +49,6 @@ export default {
 </script>
 
 <style scoped>
-.test{
-  color: white !important;
-  background-color: red;
-}
-
-::v-deep(.van-nav-bar__title){
-  color: white !important;
-  background-color: red;
-}
-
 .router-view {
   margin-top: 46px;
   height: calc(100% - 196px);

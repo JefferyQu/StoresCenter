@@ -1,21 +1,21 @@
 
 #app {
-  /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
-  /*text-align: center;*/
-  /*color: #2c3e50;*/
-  /*margin-top: 60px;*/
+    /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-moz-osx-font-smoothing: grayscale;*/
+    /*text-align: center;*/
+    /*color: #2c3e50;*/
+    /*margin-top: 60px;*/
     height: 100vh;
     position: relative;
-    background-color: rgb(240,240,240);
-
+    background-color: rgb(240, 240, 240);
 
 
 }
 
 :root {
-    --van-nav-bar-title-text-color: white !important;
-    --van-gray-8:white !important;
-    --van-button-primary-background-color: red !important;
+    --van-nav-bar-title-text-color: white;
+    --van-nav-bar-text-color:white;
+    --van-nav-bar-icon-color:white;
+    --van-nav-bar-background-color: rgb(54, 189, 237);
 }

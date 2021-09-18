@@ -4,7 +4,7 @@
       <van-field v-model="baseUrl" label="服务地址" placeholder="请输入服务地址"/>
     </van-cell-group>
     <br>
-    <van-button round block type="primary" native-type="submit" @click="onSubmit">下一步啥啥。。。。。</van-button>
+    <van-button round block type="primary" native-type="submit" @click="onSubmit">下一步</van-button>
 
 
   </div>

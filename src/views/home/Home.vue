@@ -16,7 +16,7 @@
           <van-col span="4" style="font-size: 12px">
             <router-link to="/panel-module" tag="span" style="color: white">
               编辑
-              <van-icon name="edit" />
+              <van-icon name="edit"/>
             </router-link>
 
           </van-col>
@@ -27,8 +27,8 @@
             :border="false"
             :column-num="2">
           <van-grid-item v-for="item in userInfo.panelModule" v-show="item.display">
-          <div class="panel-title">{{item.name}}</div>
-            <div class="panel-num">{{showPanelData?'0.00':'****'}}</div>
+            <div class="panel-title">{{ item.name }}</div>
+            <div class="panel-num">{{ showPanelData ? '0.00' : '****' }}</div>
           </van-grid-item>
         </van-grid>
 
@@ -44,45 +44,45 @@
 import {onBeforeMount, reactive, toRefs} from "vue";
 import {useStore} from 'vuex'
 import http from '../../api/request'
+
 export default {
   name: "Home",
   setup() {
 
-    class userInfo{
-      username:String
-      panelModule:Object []
+    class userInfo {
+      username: String
+      panelModule: Object []
 
       constructor() {
-        this.username=''
-        this.panelModule=[]
+        this.username = ''
+        this.panelModule = []
       }
 
     }
 
-    const store=useStore()
+    const store = useStore()
     let data = reactive({
       showPanelData: true,
-      userInfo:userInfo
+      userInfo: userInfo
 
     })
 
 
-
-    onBeforeMount(()=>{
-      data.userInfo=store.state.user.userInfo
+    onBeforeMount(() => {
+      data.userInfo = store.state.user.userInfo
     })
 
-    function savePanelModule(){
-      let params={
-        username:data.userInfo.username,
-        panelModule:data.userInfo.panelModule
+    function savePanelModule() {
+      let params = {
+        username: data.userInfo.username,
+        panelModule: data.userInfo.panelModule
       }
-      http.post('/users/savePanelModule',params).then((res:any)=>{
+      http.post('/users/savePanelModule', params).then((res: any) => {
         console.log(res);
       })
     }
 
-    function onEditClick(){
+    function onEditClick() {
 
     }
 
@@ -94,7 +94,6 @@ export default {
 </script>
 
 <style scoped>
-
 .notice-swipe {
   height: 40px;
   line-height: 40px;
@@ -124,20 +123,22 @@ export default {
   font-size: 18px;
 }
 
- ::v-deep(.van-grid-item__content){
+::v-deep(.van-grid-item__content) {
   background-color: transparent !important;
   justify-content: space-between;
   padding: 8px;
   height: 60px;
 }
-::v-deep(.van-grid-item__content--center){
+
+::v-deep(.van-grid-item__content--center) {
   align-items: flex-start;
 }
 
-.panel-title{
+.panel-title {
   font-size: 12px;
 }
-.panel-num{
+
+.panel-num {
   font-size: 18px;
   font-weight: bold;
 }
