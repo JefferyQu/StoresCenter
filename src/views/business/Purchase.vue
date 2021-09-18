@@ -50,7 +50,7 @@
               <van-tag plain type="danger" style="margin: 5px 5px">单位：{{ item.unit }}</van-tag>
             </template>
             <template #footer>
-              <van-stepper v-model="item.num"/>
+              <van-stepper theme="round" button-size="22" v-model="item.num"/>
             </template>
 
           </van-card>
@@ -86,7 +86,7 @@ import router from "../../router";
 import enums from "../../common/enums";
 import {dateFormat} from "../../common/format";
 import {Dialog, Toast} from 'vant'
-import {purchaseBill} from '../../common/classes'
+import {PURCHASE_BILL} from '../../common/classes'
 import http from '../../api/request'
 import {useRoute} from 'vue-router'
 
@@ -100,11 +100,11 @@ export default {
     const selectedVendor = store.state.app.selectedVendor
     const userInfo = store.state.user.userInfo
     const selectedGoods = store.state.app.selectedGoods
+    const nowDate=new Date().getTime()
 
     let data = reactive({
-      bill: purchaseBill,
-    })
-
+      bill: {}
+    } as { bill: PURCHASE_BILL })
 
 
     function onClickLeft() {
@@ -122,20 +122,17 @@ export default {
       })
     }
 
-    /*???????*/
-    function test(item : object){
-      console.log(item.id)
-    }
-
     /*初始化订单*/
     function initBill() {
+
+      //查询单据
       if (route.query.code) {
         getBillDetail(route.query.code as string)
         return
       }
 
       if (!store.state.app.bill.billType) {
-        store.commit('SET_BILL', new purchaseBill())
+        store.commit('SET_BILL', new PURCHASE_BILL())
       }
 
       data.bill = store.state.app.bill
@@ -146,7 +143,7 @@ export default {
       data.bill.maker = userInfo.username
       data.bill.billType = enums.BILL_TYPE.PURCHASE
       data.bill.maker = userInfo.username
-      data.bill.createTime = new Date() * 1
+      data.bill.createTime = nowDate.toString()
       data.bill.status = enums.BILL_STATUS.COMMITTED
 
       selectedGoods.forEach((sItem: any) => {

@@ -1,5 +1,5 @@
 import http from "../api/request";
-import {Toast} from "_vant@3.2.2@vant";
+import {Toast} from "vant";
 
 export default {
     state: {

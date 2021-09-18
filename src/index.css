@@ -13,3 +13,9 @@
 
 
 }
+
+:root {
+    --van-nav-bar-title-text-color: white !important;
+    --van-gray-8:white !important;
+    --van-button-primary-background-color: red !important;
+}

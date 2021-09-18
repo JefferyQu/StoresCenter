@@ -124,15 +124,16 @@ export default {
   font-size: 18px;
 }
 
-/deep/ .van-grid-item__content{
+ ::v-deep(.van-grid-item__content){
   background-color: transparent !important;
   justify-content: space-between;
   padding: 8px;
   height: 60px;
 }
-/deep/ .van-grid-item__content--center{
+::v-deep(.van-grid-item__content--center){
   align-items: flex-start;
 }
+
 .panel-title{
   font-size: 12px;
 }
