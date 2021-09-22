@@ -20,7 +20,7 @@ import http from '../api/request'
 export default {
   name: "ServiceAddress",
   setup() {
-    let baseUrl = ref('localhost:10086')
+    let baseUrl = ref('www.tiyanfu.vip:8088')
 
     function onSubmit() {
       localStorage.setItem('baseURL', '')
