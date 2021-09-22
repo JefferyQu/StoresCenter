@@ -176,7 +176,28 @@ export default {
 
     })
 
+    /*单据完整性验证*/
+    function billCheck(bill){
+      if (!bill.vendorId){
+        return '未选择供应商'
+      }
+      if (!bill.goodsList.length){
+        return '未添加商品'
+      }
+      return 'PASS'
+    }
+
+    /*提交点击事件*/
     function onSubmitClick() {
+
+      console.log(billCheck(data.bill));
+      if (billCheck(data.bill)!=='PASS'){
+        Dialog.alert({
+          message: '请选择供应商',
+          theme: 'round-button',
+        })
+        return;
+      }
 
       let params = JSON.parse(JSON.stringify(data.bill))
 
