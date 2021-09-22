@@ -13,6 +13,7 @@
 
 }
 
+/*重写Vant样式*/
 :root {
     --van-nav-bar-title-text-color: white;
     --van-nav-bar-text-color:white;

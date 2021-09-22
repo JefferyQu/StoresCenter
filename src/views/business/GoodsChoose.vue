@@ -1,3 +1,4 @@
+<!--商品选择界面-->
 <template>
   <div class="body">
     <van-nav-bar

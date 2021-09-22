@@ -1,3 +1,4 @@
+<!--面板功能开关界面-->
 <template>
   <div class="body">
     <van-nav-bar

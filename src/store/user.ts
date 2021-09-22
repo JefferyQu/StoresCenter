@@ -1,6 +1,7 @@
 import http from "../api/request";
 import {Toast} from "vant";
 
+/*用户数据仓库*/
 export default {
     state: {
         token: '',

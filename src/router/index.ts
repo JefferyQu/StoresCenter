@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
         name: "ServiceAddress",
         component: ServiceAddress,
         meta: {
-            level: 0,
+            level: 0, //页面层级，控制前进后退动画
             keepAlive: false
         }
     },
@@ -107,7 +107,7 @@ const routes: RouteRecordRaw[] = [
         name: "panel-module",
         component: () => import("../views/home/PanelModuleChoose.vue"),
         meta: {
-            level: 3,
+            level: 3, //页面层级，控制前进后退动画
             keepAlive: false
         }
     },

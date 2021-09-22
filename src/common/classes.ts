@@ -110,7 +110,7 @@ abstract class BILL_IMPL implements BILL{
 
 }
 
-
+/*要货单*/
 export class PURCHASE_BILL extends BILL_IMPL {
     vendorId: String
     vendorName: String

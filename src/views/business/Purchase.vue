@@ -1,3 +1,4 @@
+<!--门店要货界面-->
 <template>
   <div class="body">
     <van-nav-bar
@@ -83,7 +84,7 @@
 import {useStore} from 'vuex'
 import {reactive, toRefs, onBeforeMount, onBeforeUnmount,} from "vue";
 import router from "../../router";
-import enums from "../../common/enums";
+import {BILL_TYPE,BILL_STATUS} from "../../common/enums";
 import {dateFormat} from "../../common/format";
 import {Dialog, Toast} from 'vant'
 import {PURCHASE_BILL} from '../../common/classes'
@@ -141,10 +142,10 @@ export default {
       data.bill.orgId = selectedOrg.orgId
       data.bill.orgName = selectedOrg.orgName
       data.bill.maker = userInfo.username
-      data.bill.billType = enums.BILL_TYPE.PURCHASE
+      data.bill.billType = BILL_TYPE.PURCHASE
       data.bill.maker = userInfo.username
       data.bill.createTime = nowDate.toString()
-      data.bill.status = enums.BILL_STATUS.COMMITTED
+      data.bill.status = BILL_STATUS.COMMITTED
 
       selectedGoods.forEach((sItem: any) => {
         let res = data.bill.goodsList.find((item: any) => {

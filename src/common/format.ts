@@ -1,3 +1,4 @@
+/*时间格式化*/
 export function dateFormat(date: number | string, format: string) {
     let time = new Date(Number(date))
     let yy = time.getFullYear()

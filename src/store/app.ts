@@ -1,3 +1,4 @@
+/*App公共数据仓库*/
 export default {
     state: {
         activeTab: 0,

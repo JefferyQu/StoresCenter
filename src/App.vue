@@ -23,6 +23,8 @@ export default {
     const localUserInfo = JSON.parse(<string>localStorage.getItem('userInfo'))
     const localOrgInfo = JSON.parse(<string>localStorage.getItem('selectedOrg'))
     if (localUserInfo && localUserInfo.username) {
+
+      //用于自动登录
       // store.dispatch('Login',localUserInfo)
       store.commit('SET_USERINFO', localUserInfo)
     }

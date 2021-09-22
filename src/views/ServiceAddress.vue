@@ -1,3 +1,4 @@
+<!--切换服务地址界面-->
 <template>
   <div class="service">
     <van-cell-group inset>
