@@ -15,46 +15,46 @@
 </template>
 
 <script lang="ts">
-import {ref} from 'vue'
-import router from "../router";
+import {onBeforeMount, ref} from 'vue'
 import http from '../api/request'
 import {useStore} from "vuex";
 import {Toast} from 'vant';
-import {useRoute} from 'vue-router'
 
 export default {
   name: "OrganizationChoose",
-  setup() {
+  props: ['type'],
+  setup(props: any,context:any) {
     const store = useStore()
-    const route = useRoute()
-
     const list = ref([]);
     const loading = ref(false);
     const finished = ref(false);
-    const type = route.params.type
 
+    //////////////////////////////////// 生命周期 ////////////////////////////////////
+    onBeforeMount(() => {
 
+    })
+
+    /*加载组织列表*/
     const onLoad = () => {
-      loading.value = true
-      http.get('/org/query', {orgType: type}).then((res: any) => {
-        list.value = list.value.concat(res.list)
-        loading.value = false
-      })
+      if (loading.value) {
+        http.get('/org/query', {orgType: props.type}).then((res: any) => {
+          list.value = list.value.concat(res.list)
+          setTimeout(() => {
+            loading.value = false
+          }, 500)
+        })
+      }
+
     };
 
-
+    /**
+     * 功能描述：组织项点击事件
+     *
+     * @param {object} item 选中的组织
+     */
     function onClick(item: any) {
-      switch (type){
-        case 'all':
-          store.commit('SET_ORGANIZATION', item)
-              break
-        case 'vendor':
-          store.commit('SET_VENDOR', item)
-
-
-      }
       Toast('切换成功！')
-      router.go(-1)
+      context.emit('switchOrg',item)
     }
 
     return {

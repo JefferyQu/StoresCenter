@@ -30,24 +30,29 @@
 import {useStore} from 'vuex'
 import {ref} from "vue";
 import router from "../../router";
-import {Toast} from "_vant@3.2.2@vant";
+import {Toast} from "vant";
 
 export default {
   name: "PanelModuleChoose",
   setup() {
     const store = useStore()
-    let panelModule = store.state.user.userInfo.panelModule
+    const panelModule = store.state.user.userInfo.panelModule
     const list = ref(JSON.parse(JSON.stringify(panelModule)))
 
+    /**
+     * 功能描述：返回按钮点击事件
+     */
     function onClickLeft() {
       router.go(-1)
     }
 
+    /**
+     * 功能描述：保存按钮点击事件
+     */
     function onClickRight() {
-
       store.commit('SET_USERINFO',{panelModule:list.value})
       store.dispatch('saveUserInfo')
-      router.go(-1)
+        router.go(-1)
     }
 
     return {

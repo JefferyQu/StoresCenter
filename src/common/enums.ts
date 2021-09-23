@@ -7,6 +7,16 @@ export enum BUSINESS_TYPE{
     '配送验收'='104',
 }
 
+/*页面进入类型*/
+export enum ENTER_TYPE{
+    NEW='0',
+    QUERY='1',
+    ORG_CHOOSE='2',
+    VENDOR_CHOOSE='3',
+    GOODS_CHOOSE='4',
+
+}
+
 /*单据类型*/
 export enum BILL_TYPE {
     PURCHASE = '1012',

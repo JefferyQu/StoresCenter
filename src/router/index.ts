@@ -67,15 +67,6 @@ const routes: RouteRecordRaw[] = [
         ]
     },
     {
-        path: "/orgChoose/:type",
-        name: "orgChoose",
-        component: () => import("../components/OrganizationChoose.vue"),
-        meta: {
-            level: 6,
-            keepAlive: false
-        }
-    },
-    {
         path: "/bill-list/:code/:name",
         name: "bill-list",
         component: () => import("../views/business/BillList.vue"),
@@ -91,15 +82,6 @@ const routes: RouteRecordRaw[] = [
         meta: {
             level: 5,
             keepAlive: true
-        }
-    },
-    {
-        path: "/goods-choose",
-        name: "goods-choose",
-        component: () => import("../views/business/GoodsChoose.vue"),
-        meta: {
-            level: 6,
-            keepAlive: false
         }
     },
     {

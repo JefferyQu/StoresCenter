@@ -1,26 +1,11 @@
 <!--商品选择界面-->
 <template>
   <div class="body">
-    <van-nav-bar
-        title="商品选择"
-        left-text="返回"
-        left-arrow
-        @click-left="onClickLeft"
-        @click-right="onClickRight"
-        fixed
-        style="background-color: rgb(54, 189, 237)">
-      <template #right>
-        <van-icon name="search" size="18"/>
-      </template>
-    </van-nav-bar>
-
-
     <van-tree-select
         v-model:active-id="activeIds"
         v-model:main-active-index="activeIndex"
         :items="goodsList"
     />
-
 
     <van-submit-bar
         :price="activeIds.length*100"
@@ -28,7 +13,7 @@
         decimal-length=''
         label="已选："
         currency=""
-        @submit="onSubmit"/>
+        @submit="onSubmitClick"/>
   </div>
 </template>
 
@@ -40,7 +25,8 @@ import {useStore} from 'vuex'
 
 export default {
   name: "GoodsChoose",
-  setup() {
+  emits:['addGoods'],
+  setup(props:unknown,context:any) {
     const store = useStore()
     const activeIds = ref([]);
     const activeIndex = ref(0);
@@ -96,10 +82,13 @@ export default {
 
     }
 
+    /**
+     * 功能描述：获取商品数据
+     *
+     */
     function getGoods() {
       http.get('/goods/query', {}).then((res: any) => {
         data.backupList = res.list
-
         res.list.forEach((resItem: any) => {
           let clsItem: classItem | undefined = data.goodsList.find((localItem: any) => {
             return localItem.text === resItem.clsName
@@ -126,15 +115,11 @@ export default {
     })
 
 
-    function onClickLeft() {
-      router.go(-1)
-    }
-
-    function onClickRight() {
-      router.push('/goods-choose')
-    }
-
-    function onSubmit() {
+    /**
+     * 功能描述：确定按钮点击事件
+     *
+     */
+    function onSubmitClick() {
       data.selectedGoods = data.backupList.reduce((last: any, now: any) => {
         if (activeIds.value.includes(now.pluCode)) {
           last.push(now)
@@ -143,16 +128,13 @@ export default {
       }, [])
 
       store.commit('SET_SELECTED_GOODS', data.selectedGoods)
-      router.go(-1)
-
+      context.emit('addGoods',data.selectedGoods)
     }
 
     return {
       activeIndex,
       activeIds,
-      onClickRight,
-      onClickLeft,
-      onSubmit,
+      onSubmitClick,
       ...toRefs(data)
     };
   },

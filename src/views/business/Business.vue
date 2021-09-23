@@ -10,19 +10,23 @@
 </template>
 
 <script lang="ts">
-import http from '../../api/request'
 import {ref} from "vue";
 import {useStore} from 'vuex'
 import router from "../../router";
-import {Dialog,Toast} from 'vant'
 
 export default {
   name: "Business",
   setup() {
     const store = useStore()
     let businessList = ref([])
+
     businessList.value=store.state.app.selectedOrg.business
 
+    /**
+     * 功能描述：业务点击事件
+     *
+     * @param {object} item 业务项
+     */
     function onBusinessClick(item: any) {
           router.push({path:`/bill-list/${item.code}/${item.name}`})
     }

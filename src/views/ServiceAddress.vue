@@ -22,9 +22,11 @@ export default {
   setup() {
     let baseUrl = ref('www.tiyanfu.vip:8088')
 
+    /**
+     * 功能描述：提交按钮点击事件
+     */
     function onSubmit() {
       localStorage.setItem('baseURL', '')
-
       http.get(`http://${baseUrl.value}`, {}).then((res:any)=>{
         localStorage.setItem('baseURL', 'http://' + baseUrl.value)
         router.push('/Login')

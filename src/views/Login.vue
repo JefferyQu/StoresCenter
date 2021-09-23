@@ -1,7 +1,6 @@
 <!--登录界面-->
 <template>
   <div class="v1">
-
     <router-link to="/" style="padding-left: 20px">
       <van-icon name="wap-home" size="20"/>
       服务地址
@@ -21,9 +20,9 @@
       />
 
       <div style="margin: 16px;">
-        <van-button round block type="primary" native-type="submit" @click="onLogin">登录</van-button>
+        <van-button round block type="primary" native-type="submit" @click="onLoginClick">登录</van-button>
         <br>
-        <van-button round block type="warning" native-type="submit" @click="onRegister">注册</van-button>
+        <van-button round block type="warning" native-type="submit" @click="onRegisterClick">注册</van-button>
       </div>
     </van-form>
 
@@ -33,7 +32,7 @@
 </template>
 
 <script lang="ts">
-import {reactive, toRefs, watch} from "vue";
+import {onBeforeMount, reactive, toRefs, watch} from "vue";
 import {Toast, Dialog} from 'vant'
 import http from "../api/request";
 
@@ -45,13 +44,9 @@ export default {
   setup() {
     const store = useStore()
 
-    //登出
-    store.dispatch('loginOut')
-
-    // 响应式数据
-    const data = reactive({
-      username: '',
-      password: '',
+    //////////////////////////////////// 生命周期 ////////////////////////////////////
+    onBeforeMount(()=>{
+      store.dispatch('loginOut')
     })
 
     // 用户类
@@ -71,9 +66,21 @@ export default {
       }
     }
 
+    const data = reactive({
+      username: '',
+      password: '',
+    } as {
+      username:string,
+      password:string
+    })
 
-    // 登录函数
-    function onLogin() {
+
+
+
+    /**
+     * 功能描述：登录按钮点击事件
+     */
+    function onLoginClick() {
       if (!data.username){
         Dialog.alert({
           message: '请输入工号',
@@ -99,8 +106,10 @@ export default {
 
     }
 
-    //注册函数
-    function onRegister() {
+    /**
+     * 功能描述：注册按钮点击事件
+     */
+    function onRegisterClick() {
       const userInfo = new User(data.username, data.password).get()
       http.post('/users/sign_up', userInfo).then((res: any) => {
         console.log('请求成功', res);
@@ -118,8 +127,8 @@ export default {
 
     return {
       ...toRefs(data),
-      onLogin,
-      onRegister,
+      onLoginClick,
+      onRegisterClick,
 
     }
   }

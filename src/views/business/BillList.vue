@@ -20,13 +20,14 @@
           @click="onBillClick(item.billCode)"
           :key="item.billCode"
           class="items">
-        <van-col span="14">
+        <van-col span="20">
           <div class="vendor-name">
             {{ isVendorBusiness ? '组织' : '供应商' }}：{{ isVendorBusiness ? item.orgName : item.vendorName }}
           </div>
+          <div class="bill-code">单号：{{item.billCode}}</div>
           <div class="maker">制单人：{{ item.maker }}</div>
         </van-col>
-        <van-col span="10">
+        <van-col span="4">
           <div class="status">{{ statusFormat(item.status) }}</div>
         </van-col>
       </van-row>
@@ -56,7 +57,7 @@ import {Toast} from 'vant'
 import http from '../../api/request'
 import {onBeforeMount, ref} from "vue";
 import {useStore} from 'vuex'
-import {BUSINESS_TYPE, STATUS_READABLE, STATUS_READABLE_VENDOR} from '../../common/enums'
+import {BUSINESS_TYPE,BILL_TYPE, STATUS_READABLE, STATUS_READABLE_VENDOR,ENTER_TYPE} from '../../common/enums'
 
 
 export default {
@@ -65,45 +66,42 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const name = route.params.name
-    const code = route.params.code as BUSINESS_TYPE
-    const isVendorBusiness = [
+    const name :string = route.params.name as string
+    const code :BUSINESS_TYPE = route.params.code as BUSINESS_TYPE
+    const isVendorBusiness:boolean = [
       BUSINESS_TYPE.要货处理,
       BUSINESS_TYPE.货品配送
     ].includes(code);
 
-    const createAble = [
+    const createAble:boolean = [
       BUSINESS_TYPE.门店要货,
       BUSINESS_TYPE.货品配送
     ].includes(code);
-    const purchaseStatus = ['门店已提交', '供应商已接单', '供应商已拒绝', '门店已撤销']
 
 
     let list = ref([])
     let billType = ''
     let nextPath = ''
 
-    function onClickLeft() {
-      router.go(-1)
-    }
-
-    const onClickRight = () => Toast('按钮');
-
+    //////////////////////////////////// 生命周期 ////////////////////////////////////
     onBeforeMount(() => {
       initData()
       getList()
     })
+    //////////////////////////////////// 自定义方法 ////////////////////////////////////
 
-    /*初始化数据*/
+    /**
+     * 功能描述：初始化数据
+     */
     function initData() {
       switch (code) {
         case BUSINESS_TYPE.门店要货: {
-          billType = '1012'
+          billType = BILL_TYPE.PURCHASE
           nextPath = '/purchase'
           break
         }
         case BUSINESS_TYPE.要货处理: {
-          billType = '1012'
+          billType = BILL_TYPE.PURCHASE
           nextPath = '/purchaseHandle'
           break
         }
@@ -112,7 +110,9 @@ export default {
 
     }
 
-    /*获取列表*/
+    /**
+     * 功能描述：获取单据列表
+     */
     function getList() {
       let params = {
         billType: billType,
@@ -127,7 +127,12 @@ export default {
       })
     }
 
-    /*状态格式化*/
+    /**
+     * 功能描述：状态格式化
+     *
+     * @param {number} status 单据状态
+     * @return {string} 对应的可读化数据
+     */
     function statusFormat(status: number) {
       if (isVendorBusiness) {
         return STATUS_READABLE_VENDOR[status]
@@ -135,17 +140,40 @@ export default {
       return STATUS_READABLE[status]
     }
 
-    /*创建单据*/
-    function onCreateBtnClick() {
-      router.push(nextPath)
+    //////////////////////////////////// 事件处理 ////////////////////////////////////
+
+    /**
+     * 功能描述：返回按钮点击事件
+     */
+    function onClickLeft() {
+      router.go(-1)
     }
 
-    /*选中单据*/
-    function onBillClick(code) {
+    /**
+     * 功能描述：搜索按钮点击事件
+     */
+    const onClickRight = () => Toast('按钮');
+
+    /**
+     * 功能描述：创建按钮点击事件
+     */
+    function onCreateBtnClick() {
+      router.push({
+        path:nextPath,
+        query:{type:ENTER_TYPE.NEW}
+      })
+    }
+
+    /**
+     * 功能描述：单据选中事件
+     *
+     * @param {string} code 单据号
+     */
+    function onBillClick(code:string) {
       console.log(code);
       router.push({
         path: nextPath,
-        query: {code: code}
+        query: {type:ENTER_TYPE.QUERY,code: code}
       })
     }
 
@@ -185,19 +213,25 @@ export default {
 }
 
 .items {
-  height: 40px;
-  padding: 20px;
+  padding: 10px 20px 10px 20px;
   position: relative;
-  border-bottom: 1px solid #999999;
+  font-size: 14px;
+  background-color: white;
+  margin-top: 5px;
 }
 
-.items .maker {
-  margin-top: 10px;
+.items .bill-code{
+  line-height: 28px;
+  color: #999999;
 }
+.items .maker {
+  color: #999999;
+}
+
 
 .items .status {
   float: right;
   color: cornflowerblue;
-  line-height: 40px;
+  margin-top: 40%;
 }
 </style>

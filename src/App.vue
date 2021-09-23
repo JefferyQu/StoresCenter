@@ -7,16 +7,12 @@
 </template>
 
 <script lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
 import {useStore} from 'vuex'
 import {ref, toRefs, watch, getCurrentInstance, reactive} from "vue";
 import {useRouter, useRoute,} from 'vue-router'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
   setup() {
     console.log('重载');
     const store = useStore()

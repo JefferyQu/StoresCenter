@@ -49,7 +49,9 @@ import http from '../../api/request'
 export default {
   name: "Home",
   setup() {
+    const store = useStore()
 
+    /*用户信息类*/
     class userInfo {
       username: String
       panelModule: Object []
@@ -60,32 +62,19 @@ export default {
       }
 
     }
-
-    const store = useStore()
     let data = reactive({
       showPanelData: true,
-      userInfo: userInfo
-
+      userInfo: {}
+    } as {
+      showPanelData:boolean,
+      userInfo:userInfo
     })
 
+    //////////////////////////////////// 生命周期 ////////////////////////////////////
 
     onBeforeMount(() => {
       data.userInfo = store.state.user.userInfo
     })
-
-    function savePanelModule() {
-      let params = {
-        username: data.userInfo.username,
-        panelModule: data.userInfo.panelModule
-      }
-      http.post('/users/savePanelModule', params).then((res: any) => {
-        console.log(res);
-      })
-    }
-
-    function onEditClick() {
-
-    }
 
     return {
       ...toRefs(data)

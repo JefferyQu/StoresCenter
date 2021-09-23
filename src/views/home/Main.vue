@@ -16,33 +16,50 @@
       <van-tabbar-item to="/Main/Business" icon="search">业务</van-tabbar-item>
       <van-tabbar-item to="/Main/Personal" icon="setting-o">我的</van-tabbar-item>
     </van-tabbar>
+
+    <!--切换组织-弹出层-->
+    <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
+      <OrganizationChoose @switchOrg="switchOrg" type="vendor"></OrganizationChoose>
+    </van-popup>
   </div>
 </template>
 
 <script lang="ts">
 import {useStore} from 'vuex'
-import router from "../../router";
-import TabBar from "../../components/TabBar.vue";
 import {ref} from "vue";
+import OrganizationChoose from "../../components/OrganizationChoose.vue";
 
 export default {
   name: "Home",
   components: {
-    TabBar
+    OrganizationChoose
   },
   setup() {
     const store = useStore()
     const activeTab = ref(0);
-    let selectedOrg = store.state.app.selectedOrg
+    const showOrgChoose=ref(false)
+    const selectedOrg = store.state.app.selectedOrg
 
     //未选择组织
     if (!selectedOrg.orgId) {
-      router.push('/orgChoose/all')
+      showOrgChoose.value=true
     }
 
+    /**
+     * 功能描述：选择组织
+     *
+     * @param {object} org 选中的组织
+     */
+    function switchOrg(org:any){
+      console.log(org);
+      store.commit('SET_ORGANIZATION', org)
+      showOrgChoose.value=false
+    }
 
     return {
-      activeTab
+      activeTab,
+      showOrgChoose,
+      switchOrg,
     }
 
   }
