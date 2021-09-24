@@ -15,7 +15,7 @@
       <van-cell-group>
         <van-cell title="单号" :value="bill.billCode" v-if="bill.billCode"/>
         <van-cell title="供应商" :value="bill.vendorName||'请选择'" :is-link="editable"
-                 @click="showOrgChoose=true"/>
+                  @click="editable?showOrgChoose=true:''"/>
         <van-cell title="制单时间" :value="dateFormat(bill.createTime,'yyyy-mm-dd hh:mm:ss')"/>
         <van-cell title="制单人" :value="bill.maker"/>
         <van-cell title="组织" :value="bill.orgName"/>
@@ -23,6 +23,7 @@
             v-model="bill.remark"
             rows="2"
             autosize
+            :readonly="!editable"
             label="备注"
             type="textarea"
             maxlength="50"
@@ -77,10 +78,20 @@
         @click="onSubmitClick"
         class="submit-btn"
         type="primary"
-        size="large">提交要货单
+        size="large">
+      提交要货单
+    </van-button>
+    <van-button
+        v-else
+        @click="onRevokeClick"
+        class="submit-btn"
+        :type="isCommitted?'danger':'primary'"
+        :disabled="!isCommitted"
+        size="large">
+      {{statusTips}}<br/>{{dateFormat(bill.handleTime,'yyyy-mm-dd hh:mm:ss')}}
     </van-button>
 
-<!--添加商品-弹出层-->
+    <!--添加商品-弹出层-->
     <van-popup
         v-model:show="showGoodsChoose"
         round
@@ -90,7 +101,7 @@
       <GoodsChoose @addGoods="addGoods"></GoodsChoose>
     </van-popup>
 
-<!--切换组织-弹出层-->
+    <!--切换组织-弹出层-->
     <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
       <OrganizationChoose @switchOrg="switchOrg" type="vendor"></OrganizationChoose>
     </van-popup>
@@ -103,11 +114,11 @@
 import OrganizationChoose from "../../components/OrganizationChoose.vue";
 import GoodsChoose from "./GoodsChoose.vue";
 import {useStore} from 'vuex'
-import {reactive, toRefs, onBeforeMount, onBeforeUnmount, ref,} from "vue";
+import {onBeforeMount, reactive, ref, toRefs,} from "vue";
 import router from "../../router";
-import {BILL_TYPE, BILL_STATUS, ENTER_TYPE} from "../../common/enums";
+import {BILL_STATUS, BILL_TYPE, ENTER_TYPE,STATUS_READABLE} from "../../common/enums";
 import {dateFormat} from "../../common/format";
-import {Dialog, Toast} from 'vant'
+import {Dialog} from 'vant'
 import {PURCHASE_BILL} from '../../common/classes'
 import http from '../../api/request'
 import {useRoute} from 'vue-router'
@@ -115,7 +126,7 @@ import {useRoute} from 'vue-router'
 
 export default {
   name: "Purchase",
-  components:{
+  components: {
     OrganizationChoose,
     GoodsChoose
   },
@@ -127,8 +138,10 @@ export default {
     const userInfo = store.state.user.userInfo
     const selectedGoods = store.state.app.selectedGoods
     let editable = ref(false)
-    let showGoodsChoose=ref(false)
-    let showOrgChoose=ref(false)
+    let showGoodsChoose = ref(false)
+    let showOrgChoose = ref(false)
+    const isCommitted = ref(false)
+    const statusTips =ref('')
 
     let data = reactive({
       bill: {}
@@ -177,7 +190,7 @@ export default {
       data.bill.orgName = selectedOrg.orgName
       data.bill.maker = userInfo.username
       data.bill.billType = BILL_TYPE.PURCHASE
-      data.bill.createTime = new Date().getTime()+''
+      data.bill.createTime = new Date().getTime() + ''
       data.bill.status = BILL_STATUS.COMMITTED
     }
 
@@ -189,6 +202,8 @@ export default {
     function getBillDetail(code: string) {
       http.get('/bill/queryByCode', {billCode: code}).then((res: any) => {
         data.bill = res.detail
+        isCommitted.value = res.detail.status == BILL_STATUS.COMMITTED
+        statusTips.value=isCommitted.value?'撤销要货':STATUS_READABLE[res.detail.status]
       })
     }
 
@@ -197,7 +212,7 @@ export default {
      *
      * @param {object []} goods 商品列表
      */
-    function addGoods(goods : object[]){
+    function addGoods(goods: object[]) {
       goods.forEach((sItem: any) => {
         let res = data.bill.goodsList.find((item: any) => {
           return sItem.pluCode === item.pluCode
@@ -207,7 +222,7 @@ export default {
           data.bill.goodsList.push(sItem)
         }
       })
-      showGoodsChoose.value=false
+      showGoodsChoose.value = false
     }
 
     /**
@@ -215,13 +230,13 @@ export default {
      *
      * @param {object} org 选中的组织
      */
-    function switchOrg(org:any){
+    function switchOrg(org: any) {
       console.log(org);
       store.commit('SET_VENDOR', org)
-      data.bill.vendorId=org.orgId
-      data.bill.vendorName=org.orgName
-      data.bill.goodsList=[]
-      showOrgChoose.value=false
+      data.bill.vendorId = org.orgId
+      data.bill.vendorName = org.orgName
+      data.bill.goodsList = []
+      showOrgChoose.value = false
     }
 
     /**
@@ -243,9 +258,10 @@ export default {
     /**
      * 功能描述：保存单据
      */
-    function saveBill() {
+    function saveBill(status: BILL_STATUS) {
       let params = JSON.parse(JSON.stringify(data.bill))
       params.goodsList = JSON.stringify(params.goodsList)
+      params.status = status
       http.post('/bill/save', params).then((res: any) => {
         Dialog.alert({
           message: res.msg,
@@ -270,7 +286,7 @@ export default {
      */
     function onClickRight() {
       // router.push('/goods-choose')
-      showGoodsChoose.value=true
+      showGoodsChoose.value = true
     }
 
     /**
@@ -299,7 +315,7 @@ export default {
       }).then(() => {
         let checkResult = billCheck(data.bill)
         if (checkResult === 'PASS') {
-          saveBill()
+          saveBill(BILL_STATUS.COMMITTED)
         } else {
           Dialog.alert({
             message: checkResult,
@@ -308,6 +324,20 @@ export default {
         }
       }).catch(() => {
       });
+    }
+
+    /**
+     * 功能描述：撤销按钮点击事件
+     */
+    function onRevokeClick() {
+      Dialog.confirm({
+        message: '确认撤销要货单？',
+      }).then(() => {
+        saveBill(BILL_STATUS.UNDONE)
+      })
+          .catch(() => {
+            // on cancel
+          });
     }
 
     return {
@@ -322,7 +352,9 @@ export default {
       showOrgChoose,
       addGoods,
       switchOrg,
-
+      onRevokeClick,
+      isCommitted,
+      statusTips,
 
     }
   }

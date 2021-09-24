@@ -45,7 +45,7 @@
         @click="onCreateBtnClick"
         size="large"
         class="btn-bottom"
-        color="linear-gradient(to right, #ff6034, #ee0a24)">
+        type="primary">
       创建{{ name }}单
     </van-button>
   </div>

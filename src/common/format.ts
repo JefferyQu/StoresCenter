@@ -1,5 +1,8 @@
 /*时间格式化*/
 export function dateFormat(date: number | string, format: string) {
+    if (!date){
+        return ''
+    }
     let time = new Date(Number(date))
     let yy = time.getFullYear()
     let MM = time.getMonth() + 1
