@@ -277,29 +277,33 @@ export default {
      *
      */
     function onSubmitClick() {
-      const checkResult=checkGoods(data.plu)
-      console.log(checkResult);
-      if (checkResult!=='pass'){
-        Dialog.alert({
-          message: checkResult,
-          theme: 'round-button',
-        })
-        return
-      }
+      Dialog.alert({
+        message: '确认上架？',
+        theme: 'round-button',
+      }).then(() => {
+        const checkResult=checkGoods(data.plu)
+        if (checkResult!=='pass'){
+          Dialog.alert({
+            message: checkResult,
+            theme: 'round-button',
+          })
+          return
+        }
 
-      http.post('/goods/add',data.plu).then((res:any)=>{
-        Dialog.alert({
-          message: res.msg,
-          theme: 'round-button',
-        }).then(() => {
-          router.go(-1)
-        });
-      }).catch((err)=>{
-        Dialog.alert({
-          message: err.msg,
-          theme: 'round-button',
-        }).then(() => {
-        });
+        http.post('/goods/add',data.plu).then((res:any)=>{
+          Dialog.alert({
+            message: res.msg,
+            theme: 'round-button',
+          }).then(() => {
+            router.go(-1)
+          });
+        }).catch((err)=>{
+          Dialog.alert({
+            message: err.msg,
+            theme: 'round-button',
+          }).then(() => {
+          });
+        })
       })
     }
 
