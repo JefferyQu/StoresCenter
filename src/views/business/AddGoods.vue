@@ -123,6 +123,7 @@
 import router from "../../router";
 import {GOODS} from "../../common/classes";
 import {onBeforeMount, reactive, ref, toRefs} from "vue";
+import {useStore} from 'vuex'
 import {ENTER_TYPE} from "../../common/enums";
 import http from '../../api/request'
 import {Dialog, Toast} from 'vant'
@@ -130,6 +131,7 @@ import axios from "axios";
 export default {
   name: "AddGoods",
   setup() {
+    const store=useStore()
     const data = reactive({
       plu: {},
       vipPriceAble: false,
@@ -174,6 +176,9 @@ export default {
      */
     function initPage() {
       data.plu = new GOODS
+      data.plu.orgId=store.state.user.userInfo.orgId
+      data.plu.orgName=store.state.user.userInfo.orgName
+      console.log(store.state.user.userInfo);
       http.get('/category/query',{}).then((res:any)=>{
         data.options=res.list
       })
@@ -289,7 +294,6 @@ export default {
           })
           return
         }
-
         http.post('/goods/add',data.plu).then((res:any)=>{
           Dialog.alert({
             message: res.msg,
