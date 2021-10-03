@@ -30,7 +30,6 @@
 import {useStore} from 'vuex'
 import {ref} from "vue";
 import router from "../../router";
-import {Toast} from "vant";
 
 export default {
   name: "PanelModuleChoose",

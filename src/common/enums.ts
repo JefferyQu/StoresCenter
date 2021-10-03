@@ -5,6 +5,7 @@ export enum BUSINESS_TYPE{
     '要货处理'='102',
     '货品配送'='103',
     '配送验收'='104',
+    '新品上架'='107'
 }
 
 /*页面进入类型*/
@@ -20,6 +21,7 @@ export enum ENTER_TYPE{
 /*单据类型*/
 export enum BILL_TYPE {
     PURCHASE = '1012',
+    PURCHASEr = '10123',
 
 }
 
@@ -57,4 +59,12 @@ export enum STATUS_READABLE_VENDOR{
     '部分验收',
     '完整验收',
     '申请状态'
+}
+
+export function getEnums(enumType:any,value:any) {
+    for (var e of enumType) {
+        if (e == value) {
+            return e;
+        }
+    }
 }

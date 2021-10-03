@@ -24,11 +24,11 @@
           <div class="vendor-name">
             {{ isVendorBusiness ? '组织' : '供应商' }}：{{ isVendorBusiness ? item.orgName : item.vendorName }}
           </div>
-          <div class="bill-code">单号：{{item.billCode}}</div>
+          <div class="bill-code">单号：{{ item.billCode }}</div>
           <div class="maker">制单人：{{ item.maker }}</div>
         </van-col>
         <van-col span="4">
-          <div class="status">{{ statusFormat(item.status) }}</div>
+          <div class="status" :style="'color:'+STATUS_COLOR[item.status]">{{ statusFormat(item.status) }}</div>
         </van-col>
       </van-row>
 
@@ -57,7 +57,7 @@ import {Toast} from 'vant'
 import http from '../../api/request'
 import {onBeforeMount, ref} from "vue";
 import {useStore} from 'vuex'
-import {BUSINESS_TYPE,BILL_TYPE, STATUS_READABLE, STATUS_READABLE_VENDOR,ENTER_TYPE} from '../../common/enums'
+import {BUSINESS_TYPE, BILL_TYPE, STATUS_READABLE, STATUS_READABLE_VENDOR, ENTER_TYPE} from '../../common/enums'
 
 
 export default {
@@ -66,17 +66,24 @@ export default {
     const route = useRoute()
     const router = useRouter()
     const store = useStore()
-    const name :string = route.params.name as string
-    const code :BUSINESS_TYPE = route.params.code as BUSINESS_TYPE
-    const isVendorBusiness:boolean = [
+    const name: string = route.params.name as string
+    const code: BUSINESS_TYPE = route.params.code as BUSINESS_TYPE
+    const isVendorBusiness: boolean = [
       BUSINESS_TYPE.要货处理,
-      BUSINESS_TYPE.货品配送
+      BUSINESS_TYPE.货品配送,
     ].includes(code);
 
-    const createAble:boolean = [
+    const createAble: boolean = [
       BUSINESS_TYPE.门店要货,
       BUSINESS_TYPE.货品配送
     ].includes(code);
+
+    enum STATUS_COLOR {
+      'cornflowerblue',
+      'green',
+      'orange',
+      '#999999',
+    }
 
 
     let list = ref([])
@@ -86,8 +93,8 @@ export default {
     //////////////////////////////////// 生命周期 ////////////////////////////////////
     onBeforeMount(() => {
       initData()
-      getList()
     })
+
     //////////////////////////////////// 自定义方法 ////////////////////////////////////
 
     /**
@@ -105,9 +112,9 @@ export default {
           nextPath = '/purchaseHandle'
           break
         }
-
       }
 
+      getList()
     }
 
     /**
@@ -159,8 +166,8 @@ export default {
      */
     function onCreateBtnClick() {
       router.push({
-        path:nextPath,
-        query:{type:ENTER_TYPE.NEW}
+        path: nextPath,
+        query: {type: ENTER_TYPE.NEW}
       })
     }
 
@@ -169,11 +176,11 @@ export default {
      *
      * @param {string} code 单据号
      */
-    function onBillClick(code:string) {
+    function onBillClick(code: string) {
       console.log(code);
       router.push({
         path: nextPath,
-        query: {type:ENTER_TYPE.QUERY,code: code}
+        query: {type: ENTER_TYPE.QUERY, code: code}
       })
     }
 
@@ -186,7 +193,8 @@ export default {
       onClickRight,
       statusFormat,
       onCreateBtnClick,
-      onBillClick
+      onBillClick,
+      STATUS_COLOR
 
     }
   }
@@ -220,10 +228,11 @@ export default {
   margin-top: 5px;
 }
 
-.items .bill-code{
+.items .bill-code {
   line-height: 28px;
   color: #999999;
 }
+
 .items .maker {
   color: #999999;
 }
@@ -231,7 +240,6 @@ export default {
 
 .items .status {
   float: right;
-  color: cornflowerblue;
   margin-top: 40%;
 }
 </style>

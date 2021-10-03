@@ -13,6 +13,7 @@
 import {ref} from "vue";
 import {useStore} from 'vuex'
 import router from "../../router";
+import {BUSINESS_TYPE} from "../../common/enums";
 
 export default {
   name: "Business",
@@ -28,7 +29,22 @@ export default {
      * @param {object} item 业务项
      */
     function onBusinessClick(item: any) {
-          router.push({path:`/bill-list/${item.code}/${item.name}`})
+          const listBusiness=[
+              BUSINESS_TYPE.门店要货,
+              BUSINESS_TYPE.要货处理,
+              BUSINESS_TYPE.货品配送,
+              BUSINESS_TYPE.配送验收
+          ]
+          if (listBusiness.includes(item.code)){
+            router.push({path:`/bill-list/${item.code}/${item.name}`})
+          }else {
+            switch (item.code){
+              case BUSINESS_TYPE.新品上架:{
+                router.push('/add-goods')
+                break
+              }
+            }
+          }
     }
 
     return {

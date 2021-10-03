@@ -75,7 +75,7 @@
 
     <van-button
         v-if="editable"
-        @click="onSubmitClick"
+        @click="onSubmitClick('通过/驳回')"
         class="submit-btn"
         type="primary"
         size="large">
@@ -88,7 +88,7 @@
         :type="isCommitted?'danger':'primary'"
         :disabled="!isCommitted"
         size="large">
-      {{statusTips}}<br/>{{dateFormat(bill.handleTime,'yyyy-mm-dd hh:mm:ss')}}
+      {{ statusTips }}<br/>{{ dateFormat(bill.handleTime, 'yyyy-mm-dd hh:mm:ss') }}
     </van-button>
 
     <!--添加商品-弹出层-->
@@ -116,10 +116,10 @@ import GoodsChoose from "./GoodsChoose.vue";
 import {useStore} from 'vuex'
 import {onBeforeMount, reactive, ref, toRefs,} from "vue";
 import router from "../../router";
-import {BILL_STATUS, BILL_TYPE, ENTER_TYPE,STATUS_READABLE} from "../../common/enums";
+import {BILL_STATUS, BILL_TYPE, ENTER_TYPE, STATUS_READABLE} from "../../common/enums";
 import {dateFormat} from "../../common/format";
 import {Dialog} from 'vant'
-import {PURCHASE_BILL} from '../../common/classes'
+import {PURCHASE_BILL,GOODS} from '../../common/classes'
 import http from '../../api/request'
 import {useRoute} from 'vue-router'
 
@@ -141,7 +141,7 @@ export default {
     let showGoodsChoose = ref(false)
     let showOrgChoose = ref(false)
     const isCommitted = ref(false)
-    const statusTips =ref('')
+    const statusTips = ref('')
 
     let data = reactive({
       bill: {}
@@ -203,7 +203,7 @@ export default {
       http.get('/bill/queryByCode', {billCode: code}).then((res: any) => {
         data.bill = res.detail
         isCommitted.value = res.detail.status == BILL_STATUS.COMMITTED
-        statusTips.value=isCommitted.value?'撤销要货':STATUS_READABLE[res.detail.status]
+        statusTips.value = isCommitted.value ? '撤销要货' : STATUS_READABLE[res.detail.status]
       })
     }
 
@@ -212,16 +212,8 @@ export default {
      *
      * @param {object []} goods 商品列表
      */
-    function addGoods(goods: object[]) {
-      goods.forEach((sItem: any) => {
-        let res = data.bill.goodsList.find((item: any) => {
-          return sItem.pluCode === item.pluCode
-        })
-        if (!res || res === -1) {
-          sItem.num = 0
-          data.bill.goodsList.push(sItem)
-        }
-      })
+    function addGoods(goods: GOODS[]) {
+      data.bill.addGoods(goods)
       showGoodsChoose.value = false
     }
 
@@ -258,20 +250,19 @@ export default {
     /**
      * 功能描述：保存单据
      */
-    function saveBill(status: BILL_STATUS) {
-      let params = JSON.parse(JSON.stringify(data.bill))
-      params.goodsList = JSON.stringify(params.goodsList)
-      params.status = status
-      http.post('/bill/save', params).then((res: any) => {
-        Dialog.alert({
-          message: res.msg,
-          theme: 'round-button',
-        }).then(() => {
-          router.go(-1)
-        });
-      })
-    }
-
+        function saveBill(status: BILL_STATUS) {
+          let params = JSON.parse(JSON.stringify(data.bill))
+          params.goodsList = JSON.stringify(params.goodsList)
+          params.status = status
+          http.post('/bill/save', params).then((res: any) => {
+            Dialog.alert({
+              message: res.msg,
+              theme: 'round-button',
+            }).then(() => {
+              router.go(-1)
+            });
+          })
+        }
     //////////////////////////////////// 事件处理 ////////////////////////////////////
 
     /**

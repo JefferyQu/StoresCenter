@@ -93,6 +93,15 @@ const routes: RouteRecordRaw[] = [
             keepAlive: false
         }
     },
+    {
+        path: "/add-goods",
+        name: "add-goods",
+        component: () => import("../views/business/AddGoods.vue"),
+        meta: {
+            level: 5,
+            keepAlive: true
+        }
+    },
 
 ];
 

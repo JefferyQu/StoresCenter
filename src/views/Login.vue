@@ -76,6 +76,7 @@ export default {
 
 
 
+    //////////////////////////////////// 事件处理 ////////////////////////////////////
 
     /**
      * 功能描述：登录按钮点击事件
@@ -110,6 +111,24 @@ export default {
      * 功能描述：注册按钮点击事件
      */
     function onRegisterClick() {
+      if (!data.username){
+        Dialog.alert({
+          message: '请输入工号',
+          theme: 'round-button',
+        }).then(() => {
+          // on close
+        });
+        return
+      }
+      if(!data.password){
+        Dialog.alert({
+          message: '请输入密码',
+          theme: 'round-button',
+        }).then(() => {
+          // on close
+        });
+        return;
+      }
       const userInfo = new User(data.username, data.password).get()
       http.post('/users/sign_up', userInfo).then((res: any) => {
         console.log('请求成功', res);
