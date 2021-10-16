@@ -24,12 +24,12 @@ export default ({
     server: {
         cors: true,
         open: true,
-   /*     proxy: {
+        proxy: {
             '/api': {
-                target: 'http://192.168.99.223:3000',   //代理接口
+                target: 'http://localhost:8088',   //代理接口
                 changeOrigin: true,
                 rewrite: (path:any) => path.replace(/^\/api/, '')
             }
-        }*/
+        }
     }
 });

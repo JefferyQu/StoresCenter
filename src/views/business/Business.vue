@@ -37,7 +37,7 @@ export default {
           const listBusiness=[
               BUSINESS_TYPE.门店要货,
               BUSINESS_TYPE.要货处理,
-              BUSINESS_TYPE.货品配送,
+              BUSINESS_TYPE.配送发货,
               BUSINESS_TYPE.配送验收
           ]
           if (listBusiness.includes(item.code)){

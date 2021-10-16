@@ -31,5 +31,11 @@
     /*--van-action-bar-button-danger-color: var(--van-button-primary-background-color);*/
 
     /* 按钮 */
- --van-button-large-height:50px;
+    --van-button-large-height: 50px;
+
+}
+
+/* 自定义样式 */
+:root{
+    --sc-nav-bar-background:linear-gradient(90deg,  #44709D 7%,  #5C96D1 100%);
 }

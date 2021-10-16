@@ -25,7 +25,7 @@
     <!--切换组织-弹出层-->
     <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
       <choose-menu
-        @switchOrg="switchOrg"
+        @onChoose="switchOrg"
         type="orgChoose"
         org-type="all"
         @onCancelClick="showOrgChoose=false" />

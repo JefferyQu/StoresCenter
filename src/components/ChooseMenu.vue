@@ -114,14 +114,14 @@ export default {
     function getBillList() {
       http.get('/bill/queryByType', {billType: props.billType}).then((res: any) => {
         data.list = res.list.map((item: any) => {
-          item.title = item.orgId + ' ' + item.orgName;
+          item.title = item.billCode;
           return item
         })
       })
     }
 
 
-    /*加载组织列表*/
+    /*加载列表*/
     const onLoad = () => {
       data.overIndex += 5
       if (data.list.length <= data.overIndex) {
@@ -142,7 +142,8 @@ export default {
      * @param {object} item 选中的组织
      */
     function onItemClick(item: any) {
-      emit('switchOrg', item)
+      console.log('已选中',item);
+      emit('onChoose', item)
     }
 
     /**

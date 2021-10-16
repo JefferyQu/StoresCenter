@@ -7,7 +7,8 @@
 <template>
   <div>
     <van-nav-bar
-      :title="getActiveTab==0?'门店中心':getActiveTab==1?'业务':'我的'"
+      v-show="getActiveTab"
+      :title="getActiveTab===1?'业务':'我的'"
       fixed
     />
 

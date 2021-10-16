@@ -26,7 +26,7 @@
 
 ------------------------------------------------------------------------------->
 <template>
-  <base-panel-component :title="title">
+  <custom-panel :title="title">
     <div class="content">
       <table>
         <tr :style="setRowStyle(1)" class="row">
@@ -64,11 +64,10 @@
         </tr>
       </table>
     </div>
-  </base-panel-component>
+  </custom-panel>
 </template>
 
 <script lang="ts" setup>
-
 const name = 'CustomTable'
 
 interface ListItem {
@@ -135,24 +134,24 @@ function setIndexStyle() {
 
 <style scoped>
 .content {
-  width: calc(100% + 12px);
+  width: calc(100% + 10px);
   overflow-x: scroll;
-  margin-left: -6px;
+  margin-left: -5px;
 }
 
 table {
   margin-top: 10px;
   padding: 0 10px;
   width: 100%;
-  font-size: 20px;
+  font-size: 14px;
   border-collapse: collapse;
-  border: 2px solid #F1F3F8;
+  border: 1px solid #F1F3F8;
   table-layout: fixed;
   word-break: break-all;
 }
 
 .row {
-  line-height: 60px;
+  line-height: 40px;
   border: 0;
 }
 

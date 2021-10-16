@@ -49,12 +49,12 @@ export default {
     },
     color: {
       type: String,
-      default: 'var(--hs-color-text)',
+      default: 'black',
       required: false
     },
     background: {
       type: String,
-      default: 'var(--hs-bg-function-panel)',
+      default: 'white',
       required: false
     },
     round: {
@@ -73,7 +73,7 @@ export default {
       return {
         background: props.background,
         color: props.color,
-        'border-radius': props.round ? 'var(--hs-border-radius-normal)' : '0'
+        'border-radius': props.round ? '4px' : '0'
       }
     })
 
@@ -86,16 +86,16 @@ export default {
 
 <style scoped>
 .panel {
-  width: calc(100% - 52px);
-  margin: 10px;
-  padding: 16px;
+  width: calc(100% - 30px);
+  margin: 5px;
+  padding: 10px;
   border: 0;
 }
 
 .panel_header {
-  line-height: 28px;
+  line-height: 20px;
   font-weight: bold;
   padding-bottom: 16px;
-  font-size: var(--hs-font-size-text);
+  font-size: 15px;
 }
 </style>

@@ -80,7 +80,7 @@
 
     <van-button
         v-if="editable"
-        @click="onSubmitClick('通过/驳回')"
+        @click="onSubmitClick()"
         class="submit-btn"
         type="primary"
         size="large">
@@ -109,7 +109,7 @@
     <!--切换组织-弹出层-->
     <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
       <choose-menu
-        @switchOrg="switchOrg"
+        @onChoose="switchOrg"
         type="orgChoose"
         org-type="vendor"
         @onCancelClick="showOrgChoose=false" />

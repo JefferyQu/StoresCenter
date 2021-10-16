@@ -7,13 +7,13 @@
 <template>
   <div class="body">
     <van-nav-bar
-        :title="name"
-        left-text="返回"
-        left-arrow
-        @click-left="onClickLeft"
-        @click-right="onClickRight"
-        fixed
-        style="background-color: rgb(54, 189, 237)">
+      :title="name"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+      @click-right="onClickRight"
+      fixed
+      style="background-color: rgb(54, 189, 237)">
       <template #right>
         <van-icon name="search" size="18"/>
       </template>
@@ -22,10 +22,10 @@
     <!--单据列表-->
     <div class="center-area">
       <van-row
-          v-for="item in list"
-          @click="onBillClick(item.billCode)"
-          :key="item.billCode"
-          class="items">
+        v-for="item in list"
+        @click="onBillClick(item.billCode)"
+        :key="item.billCode"
+        class="items">
         <van-col span="20">
           <div class="vendor-name">
             {{ isVendorBusiness ? '组织' : '供应商' }}：{{ isVendorBusiness ? item.orgName : item.vendorName }}
@@ -47,11 +47,11 @@
 
     <!--底部按钮-->
     <van-button
-        v-if="createAble"
-        @click="onCreateBtnClick"
-        size="large"
-        class="btn-bottom"
-        type="primary">
+      v-if="createAble"
+      @click="onCreateBtnClick"
+      size="large"
+      class="btn-bottom"
+      type="primary">
       创建{{ name }}单
     </van-button>
   </div>
@@ -76,12 +76,12 @@ export default {
     const code: BUSINESS_TYPE = route.params.code as BUSINESS_TYPE
     const isVendorBusiness: boolean = [
       BUSINESS_TYPE.要货处理,
-      BUSINESS_TYPE.货品配送,
+      BUSINESS_TYPE.配送发货,
     ].includes(code);
 
     const createAble: boolean = [
       BUSINESS_TYPE.门店要货,
-      BUSINESS_TYPE.货品配送
+      BUSINESS_TYPE.配送发货
     ].includes(code);
 
     enum STATUS_COLOR {
@@ -115,7 +115,12 @@ export default {
         }
         case BUSINESS_TYPE.要货处理: {
           billType = BILL_TYPE.PURCHASE
-          nextPath = '/purchaseHandle'
+          nextPath = '/purchase-handle'
+          break
+        }
+        case BUSINESS_TYPE.配送发货: {
+          billType = BILL_TYPE.DELIVERY
+          nextPath = '/delivery'
           break
         }
       }

@@ -85,6 +85,15 @@ const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: "/purchase-handle",
+        name: "purchase-handle",
+        component: () => import("../views/business/PurchaseHandle.vue"),
+        meta: {
+            level: 5,
+            keepAlive: true
+        }
+    },
+    {
         path: "/panel-module",
         name: "panel-module",
         component: () => import("../views/home/PanelModuleChoose.vue"),
@@ -97,6 +106,15 @@ const routes: RouteRecordRaw[] = [
         path: "/add-goods",
         name: "add-goods",
         component: () => import("../views/business/AddGoods.vue"),
+        meta: {
+            level: 5,
+            keepAlive: true
+        }
+    },
+    {
+        path: "/delivery",
+        name: "delivery",
+        component: () => import("../views/business/Delivery.vue"),
         meta: {
             level: 5,
             keepAlive: true

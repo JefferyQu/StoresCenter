@@ -48,6 +48,7 @@ export default {
 .app {
   height: 100vh;
   max-height: 100vh;
+  width: 100vw;
 }
 
 .back-enter-active,
