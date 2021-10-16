@@ -1,3 +1,9 @@
+<!-----------------------------------------------------------------------------
+- 功能说明：单据列表组件
+- 版权说明：quJie  版权所有
+- 创建：quJie 2021-10-28
+- 修改：
+------------------------------------------------------------------------------->
 <template>
   <div class="body">
     <van-nav-bar
@@ -127,8 +133,6 @@ export default {
         vendorId: isVendorBusiness ? store.state.app.selectedOrg.orgId : ''
       }
 
-      console.log(params);
-
       http.get('/bill/queryByType', params).then((res: any) => {
         list.value = res.list
       })
@@ -213,11 +217,12 @@ export default {
 }
 
 .center-area {
-  padding-top: 46px;
-  padding-bottom: 50px;
+  position: fixed;
+  top: var(--van-nav-bar-height);
+  bottom: var(--van-button-large-height);
+  width: 100%;
   font-size: 14px;
   overflow-y: scroll;
-  height: calc(100% - 48px);
 }
 
 .items {

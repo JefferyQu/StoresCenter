@@ -1,19 +1,28 @@
-<!--展台-->
+<!-----------------------------------------------------------------------------
+- 功能说明：二级路由的入口组件
+- 版权说明：quJie  版权所有
+- 创建：quJie 2021-09-28
+- 修改：
+------------------------------------------------------------------------------->
 <template>
   <div>
     <van-nav-bar
-        :title="activeTab==0?'门店中心':activeTab==1?'业务':'我的'"
-        fixed
+      :title="getActiveTab==0?'门店中心':getActiveTab==1?'业务':'我的'"
+      fixed
     />
 
     <!--子路由-->
-    <router-view class="router-view"></router-view>
+    <section class="content">
+      <router-view class="router-view"></router-view>
+    </section>
+
 
     <!--底部导航栏-->
-    <van-tabbar v-model="activeTab" fixed>
-      <van-tabbar-item to="/Main/Home" icon="home-o">首页</van-tabbar-item>
-      <van-tabbar-item to="/Main/Business" icon="search">业务</van-tabbar-item>
-      <van-tabbar-item to="/Main/Personal" icon="setting-o">我的</van-tabbar-item>
+    <van-tabbar v-model="getActiveTab" fixed>
+      <van-tabbar-item
+        v-for="item in tabBarItems"
+        :to="item.route"
+        :icon="item.icon">{{item.title}}</van-tabbar-item>
     </van-tabbar>
 
     <!--切换组织-弹出层-->
@@ -25,8 +34,9 @@
 
 <script lang="ts">
 import {useStore} from 'vuex'
-import {onBeforeMount, ref, onUnmounted} from "vue";
-import OrganizationChoose from "../../components/OrganizationChoose.vue";
+import {ref, computed} from "vue";
+import OrganizationChoose from "../../components/ChooseMenu.vue";
+import {useRouter} from 'vue-router'
 
 export default {
   name: "Home",
@@ -34,23 +44,57 @@ export default {
     OrganizationChoose
   },
   setup() {
+    const router = useRouter()
     const store = useStore()
     const activeTab = ref(0);
     const showOrgChoose = ref(false)
-    const selectedOrg = store.state.app.selectedOrg
+    // const selectedOrg = store.state.app.selectedOrg
+    const tabBarItems = [
+      {
+        title: '首页',
+        route: '/Main/Home',
+        icon: 'home-o'
+      },
+      {
+        title: '业务',
+        route: '/Main/Business',
+        icon: 'search'
+      },
+      {
+        title: '我的',
+        route: '/Main/Personal',
+        icon: 'setting-o'
+      },
+    ]
 
     //////////////////////////////////// 生命周期 ////////////////////////////////////
-    onBeforeMount(() => {
-      //未选择组织
-      if (!selectedOrg.orgId) {
-        showOrgChoose.value = true
+    /*    onBeforeMount(() => {
+          //未选择组织
+          if (!selectedOrg.orgId) {
+            showOrgChoose.value = true
+          }
+
+          activeTab.value = store.state.app.activeTab
+        })
+
+        onUnmounted(() => {
+          store.commit('SET_ACTIVE_TAB', activeTab.value)
+        })*/
+
+    const getActiveTab = computed({
+      get() {
+        let activeIndex: number = 0
+        tabBarItems.find((item, index) => {
+          if (router.currentRoute.value.path.indexOf(item.route) !== -1) {
+            activeIndex = index
+            return item
+          }
+        })
+        return activeIndex
+      },
+      set(value: number) {
+        router.push(tabBarItems[value].route)
       }
-
-      activeTab.value = store.state.app.activeTab
-    })
-
-    onUnmounted(() => {
-      store.commit('SET_ACTIVE_TAB', activeTab.value)
     })
 
 
@@ -69,6 +113,8 @@ export default {
       activeTab,
       showOrgChoose,
       switchOrg,
+      tabBarItems,
+      getActiveTab
     }
 
   }
@@ -76,8 +122,11 @@ export default {
 </script>
 
 <style scoped>
-.router-view {
-  margin-top: 46px;
-  height: calc(100% - 196px);
+.content {
+  position: fixed;
+  top: var(--van-nav-bar-height);
+  bottom: var(--van-tabbar-height);
+  width: 100%;
+  z-index: 10;
 }
 </style>

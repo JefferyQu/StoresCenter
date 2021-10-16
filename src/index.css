@@ -15,9 +15,21 @@
 
 /*重写Vant样式*/
 :root {
+    /* 系统标题栏 */
+    --van-nav-bar-height: 40px;
+
     --van-nav-bar-title-text-color: white;
-    --van-nav-bar-text-color:white;
-    --van-nav-bar-icon-color:white;
+    --van-nav-bar-text-color: white;
+    --van-nav-bar-icon-color: white;
     /*--van-nav-bar-background-color: rgb(238,10,36);*/
     --van-nav-bar-background-color: rgb(54, 189, 237);
+
+    /* 底部导航栏 */
+    --van-tabbar-height: 50px;
+
+    /* dialog弹窗 */
+    /*--van-action-bar-button-danger-color: var(--van-button-primary-background-color);*/
+
+    /* 按钮 */
+ --van-button-large-height:50px;
 }

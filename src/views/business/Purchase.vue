@@ -1,4 +1,9 @@
-<!--门店要货界面-->
+<!-----------------------------------------------------------------------------
+- 功能说明：门店要货组件
+- 版权说明：quJie  版权所有
+- 创建：quJie 2021-10-08
+- 修改：
+------------------------------------------------------------------------------->
 <template>
   <div class="body">
     <van-nav-bar
@@ -98,12 +103,16 @@
         position="bottom"
         :style="{ height: '90%' }"
     >
-      <GoodsChoose @addGoods="addGoods"></GoodsChoose>
+      <goods-choose @addGoods="addGoods"/>
     </van-popup>
 
     <!--切换组织-弹出层-->
     <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
-      <OrganizationChoose @switchOrg="switchOrg" type="vendor"></OrganizationChoose>
+      <choose-menu
+        @switchOrg="switchOrg"
+        type="orgChoose"
+        org-type="vendor"
+        @onCancelClick="showOrgChoose=false" />
     </van-popup>
   </div>
 
@@ -111,8 +120,6 @@
 </template>
 
 <script lang="ts">
-import OrganizationChoose from "../../components/OrganizationChoose.vue";
-import GoodsChoose from "./GoodsChoose.vue";
 import {useStore} from 'vuex'
 import {onBeforeMount, reactive, ref, toRefs,} from "vue";
 import router from "../../router";
@@ -122,14 +129,12 @@ import {Dialog} from 'vant'
 import {PURCHASE_BILL,GOODS} from '../../common/classes'
 import http from '../../api/request'
 import {useRoute} from 'vue-router'
+import GoodsChoose from "../../components/GoodsChoose.vue";
 
 
 export default {
   name: "Purchase",
-  components: {
-    OrganizationChoose,
-    GoodsChoose
-  },
+  components: {GoodsChoose},
   setup() {
     const store = useStore()
     const route = useRoute()
@@ -276,7 +281,13 @@ export default {
      * 功能描述：添加商品按钮点击事件
      */
     function onClickRight() {
-      // router.push('/goods-choose')
+      if (!data.bill.vendorId){
+        Dialog.alert({
+          message: '未选择供应商',
+          theme: 'round-button'
+        })
+        return
+      }
       showGoodsChoose.value = true
     }
 

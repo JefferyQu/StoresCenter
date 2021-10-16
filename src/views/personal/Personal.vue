@@ -1,3 +1,9 @@
+<!-----------------------------------------------------------------------------
+- 功能说明：“我的”界面组件
+- 版权说明：quJie  版权所有
+- 创建：quJie 2021-09-28
+- 修改：
+------------------------------------------------------------------------------->
 <template>
   <div class="personal">
     <div class="top">
@@ -18,7 +24,11 @@
 
     <!--切换组织-弹出层-->
     <van-popup v-model:show="showOrgChoose" position="right" :style="{height:'100%', width: '100%' }">
-      <OrganizationChoose @switchOrg="switchOrg" type="all"></OrganizationChoose>
+      <choose-menu
+        @switchOrg="switchOrg"
+        type="orgChoose"
+        org-type="all"
+        @onCancelClick="showOrgChoose=false" />
     </van-popup>
 
   </div>
@@ -29,13 +39,9 @@ import {useStore} from 'vuex'
 import {reactive, ref, toRefs} from "vue";
 import router from "../../router";
 import {Dialog} from 'vant'
-import OrganizationChoose from "../../components/OrganizationChoose.vue";
 
 export default {
   name: "My",
-  components:{
-    OrganizationChoose
-  },
   setup() {
     const store = useStore()
     const showOrgChoose = ref(false)

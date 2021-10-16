@@ -118,10 +118,10 @@ abstract class BILL_IMPL implements BILL {
     }
 
 
-    deleteGoods(goods: GOODS | GOODS[]): void {
+    deleteGoods(goods: GOODS): void {
         let that: any = this
         let index: number | undefined = that.children.find(function (cItem: any, index: number, arr: Array<GOODS>) {
-            if (cItem.text === item.pluName)
+            if (cItem.text === goods.pluName)
                 return index
         })
 

@@ -1,4 +1,9 @@
-<!--商品选择界面-->
+<!-----------------------------------------------------------------------------
+- 功能说明：商品选择组件
+- 版权说明：quJie  版权所有
+- 创建：quJie 2021-09-28
+- 修改：
+------------------------------------------------------------------------------->
 <template>
   <div class="body">
     <van-tree-select
@@ -19,8 +24,8 @@
 
 <script lang="ts">
 import {onBeforeMount, reactive, ref, toRefs, watch} from 'vue'
-import router from "../../router";
-import http from '../../api/request'
+import router from "../router";
+import http from '../api/request'
 import {useStore} from 'vuex'
 
 export default {

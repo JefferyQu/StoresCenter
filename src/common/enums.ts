@@ -21,7 +21,6 @@ export enum ENTER_TYPE{
 /*单据类型*/
 export enum BILL_TYPE {
     PURCHASE = '1012',
-    PURCHASEr = '10123',
 
 }
 
